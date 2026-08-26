@@ -7,6 +7,23 @@ forcing caused by time-varying emission profiles.
 
 The repository is currently an educational notebook project. The next stages
 will extract a tested calculation library and build an interactive application.
+The canonical scientific narrative, phased roadmap, technical architecture,
+and completion criteria are maintained in
+[`docs/implementation-plan.md`](docs/implementation-plan.md).
+
+## Narrative prototype
+
+The opening interactive scene is available in [`app/`](app/). It releases a
+one-tonne CO2 pulse, animates the atmospheric fraction remaining using the
+validated AR6 calculation core, and introduces the resulting Earth energy
+imbalance one concept at a time.
+
+```shell
+uv run python -m http.server 8000
+```
+
+Open <http://localhost:8000/app/>. The prototype has no JavaScript build step;
+see [`app/README.md`](app/README.md) for its scientific status.
 
 ## Notebooks
 

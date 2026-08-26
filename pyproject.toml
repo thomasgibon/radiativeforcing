@@ -11,6 +11,10 @@ dependencies = [
     "tqdm>=4.66,<5",
 ]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [dependency-groups]
 dev = [
     "ipykernel>=6.29,<8",
@@ -20,4 +24,7 @@ dev = [
 ]
 
 [tool.uv]
-package = false
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/radiativeforcing"]

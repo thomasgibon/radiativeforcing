@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="An interactive introduction to carbon dioxide persistence and radiative forcing."
+    />
+    <title>One tonne of CO2 | Radiative forcing</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#experiment">Skip to the experiment</a>
+
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="Radiative forcing, back to top">
+        <span class="wordmark-mark" aria-hidden="true"></span>
+        Radiative forcing
+      </a>
+      <span class="prototype-label">Opening-scene prototype</span>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Begin with one pulse</p>
+        <h1 id="page-title">
+          One tonne, emitted<br />
+          <em>in an instant.</em>
+        </h1>
+        <p class="hero-copy">
+          What happens after a tonne of carbon dioxide enters the atmosphere?
+          Release it, then move through time.
+        </p>
+        <a class="down-cue" href="#experiment">
+          Try the experiment
+          <span aria-hidden="true">↓</span>
+        </a>
+      </section>
+
+      <section class="experiment-section" id="experiment" aria-labelledby="experiment-title">
+        <div class="section-intro">
+          <p class="chapter-number">01</p>
+          <div>
+            <p class="eyebrow">A pulse does not vanish</p>
+            <h2 id="experiment-title">Release 1 tonne of CO2.</h2>
+            <p>
+              The emission takes a moment. Exchanges with oceans, soils, and
+              vegetation then move parts of it out of the atmosphere at very
+              different rates. Beyond this 500-year window, ocean–sediment
+              chemistry and rock weathering continue the drawdown over tens to
+              hundreds of thousands of years and longer; those processes are
+              not represented here.
+            </p>
+          </div>
+        </div>
+
+        <nav class="causal-chain" aria-label="Climate cause-and-effect chain">
+          <span>Human activity</span>
+          <i aria-hidden="true">→</i>
+          <span class="understood">Emission</span>
+          <i aria-hidden="true">→</i>
+          <span class="current" aria-current="step">Atmospheric concentration</span>
+          <i aria-hidden="true">→</i>
+          <span>Radiative forcing</span>
+          <i aria-hidden="true">→</i>
+          <span>Climate response</span>
+          <i aria-hidden="true">→</i>
+          <span>Impacts</span>
+        </nav>
+
+        <div class="experiment-card" data-state="idle">
+          <div class="experiment-toolbar">
+            <button class="emit-button" id="emit-button" type="button" disabled>
+              <span class="emit-icon" aria-hidden="true">↑</span>
+              <span id="emit-label">Loading model…</span>
+            </button>
+            <button class="text-button" id="reset-button" type="button" hidden>
+              Reset
+            </button>
+            <p class="model-status" id="model-status" role="status">Preparing the pulse response</p>
+          </div>
+
+          <div class="experiment-body">
+            <div class="atmosphere-panel">
+              <div class="panel-heading">
+                <span>Atmospheric pulse</span>
+                <span class="year-readout">Year <strong id="year-value">0</strong></span>
+              </div>
+
+              <div class="atmosphere" aria-hidden="true">
+                <div class="atmosphere-glow"></div>
+                <div class="earth-disc"></div>
+                <div class="particle-field" id="particle-field"></div>
+                <div class="pulse-arrow" id="pulse-arrow">
+                  <span>1 t CO2</span>
+                  <i></i>
+                </div>
+              </div>
+
+              <div class="mass-readout" aria-live="polite">
+                <strong id="mass-value">—</strong>
+                <span>kg of the original pulse<br />still in the atmosphere</span>
+              </div>
+            </div>
+
+            <div class="response-panel">
+              <div class="panel-heading">
+                <span>Pulse remaining through time</span>
+                <span class="percent-readout" id="percent-value">—</span>
+              </div>
+
+              <div class="chart-wrap">
+                <svg
+                  id="response-chart"
+                  class="response-chart"
+                  viewBox="0 0 720 360"
+                  role="img"
+                  aria-labelledby="chart-title chart-description"
+                >
+                  <title id="chart-title">Fraction of a carbon dioxide pulse remaining over time</title>
+                  <desc id="chart-description">
+                    Before emission, no pulse is shown. Release one tonne and move the time control
+                    to inspect how much remains in the atmosphere.
+                  </desc>
+                  <g class="chart-grid" aria-hidden="true">
+                    <line x1="64" x2="694" y1="32" y2="32"></line>
+                    <line x1="64" x2="694" y1="172" y2="172"></line>
+                    <line x1="64" x2="694" y1="312" y2="312"></line>
+                  </g>
+                  <g class="chart-axis" aria-hidden="true">
+                    <text x="52" y="38" text-anchor="end">100%</text>
+                    <text x="52" y="178" text-anchor="end">50%</text>
+                    <text x="52" y="318" text-anchor="end">0%</text>
+                    <text x="64" y="342" text-anchor="middle">0</text>
+                    <text x="379" y="342" text-anchor="middle">250</text>
+                    <text x="694" y="342" text-anchor="middle">500 years</text>
+                  </g>
+                  <path class="response-line" id="response-line" aria-hidden="true"></path>
+                  <line class="time-line" id="time-line" x1="64" x2="64" y1="32" y2="312"></line>
+                  <circle class="time-point" id="time-point" cx="64" cy="32" r="7"></circle>
+                </svg>
+                <div class="chart-idle" id="chart-idle">Press Emit to begin</div>
+              </div>
+
+              <div class="time-controls">
+                <button
+                  class="play-button"
+                  id="play-button"
+                  type="button"
+                  aria-label="Play time"
+                  disabled
+                >
+                  <span aria-hidden="true">▶</span>
+                </button>
+                <label class="time-slider-label" for="time-slider">
+                  <span class="visually-hidden">Years since emission</span>
+                  <input
+                    id="time-slider"
+                    type="range"
+                    min="0"
+                    max="500"
+                    step="1"
+                    value="0"
+                    disabled
+                  />
+                </label>
+              </div>
+
+              <p class="chart-note" id="model-note">
+                Loading scientific provenance…
+              </p>
+            </div>
+          </div>
+
+          <div class="experiment-insight" id="experiment-insight" aria-live="polite">
+            <span class="insight-rule" aria-hidden="true"></span>
+            <p id="insight-copy">
+              Start the experiment to see why the date of an emission is not the end of its story.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="forcing-section" id="forcing" aria-labelledby="forcing-title">
+        <div class="section-intro">
+          <p class="chapter-number">02</p>
+          <div>
+            <p class="eyebrow">From presence to influence</p>
+            <h2 id="forcing-title">Remaining CO2 changes the flow of energy.</h2>
+            <p>
+              Atmospheric burden is not yet radiative forcing. The gas's
+              radiative efficiency translates each kilogram still aloft into
+              a small change in Earth's global mean energy flow.
+            </p>
+          </div>
+        </div>
+
+        <nav class="causal-chain" aria-label="Climate cause-and-effect chain">
+          <span>Human activity</span><i aria-hidden="true">→</i>
+          <span class="understood">Emission</span><i aria-hidden="true">→</i>
+          <span class="understood">Atmospheric concentration</span><i aria-hidden="true">→</i>
+          <span class="current" aria-current="step">Radiative forcing</span><i aria-hidden="true">→</i>
+          <span>Climate response</span><i aria-hidden="true">→</i><span>Impacts</span>
+        </nav>
+
+        <div class="forcing-card">
+          <div class="forcing-copy">
+            <p class="forcing-kicker">At year <strong id="forcing-year-value">0</strong></p>
+            <div class="forcing-equation" aria-live="polite">
+              <div><strong id="forcing-mass-value">1,000</strong><span>kg remaining</span></div>
+              <b aria-hidden="true">×</b>
+              <div><strong id="forcing-coefficient-value">—</strong><span>W/m² per kg</span></div>
+              <b aria-hidden="true">=</b>
+              <div class="forcing-result"><strong id="forcing-value">—</strong><span>W/m² forcing</span></div>
+            </div>
+            <p>
+              This number is tiny because it is the global-average forcing of
+              just one tonne. Its usefulness is that pulse responses can be
+              scaled and combined when we later introduce emission profiles.
+            </p>
+          </div>
+
+          <div class="forcing-chart-panel">
+            <div class="panel-heading"><span>Effective radiative forcing from the pulse</span><span>Move through time</span></div>
+            <svg id="forcing-chart" class="forcing-chart" viewBox="0 0 720 360" role="img" aria-labelledby="forcing-chart-title forcing-chart-description">
+              <title id="forcing-chart-title">Radiative forcing from a one-tonne carbon dioxide pulse over time</title>
+              <desc id="forcing-chart-description">The forcing declines as less of the original pulse remains in the atmosphere.</desc>
+              <g class="chart-grid" aria-hidden="true">
+                <line x1="64" x2="694" y1="32" y2="32"></line><line x1="64" x2="694" y1="172" y2="172"></line><line x1="64" x2="694" y1="312" y2="312"></line>
+              </g>
+              <g class="chart-axis" aria-hidden="true">
+                <text id="forcing-axis-top" x="52" y="38" text-anchor="end">—</text><text id="forcing-axis-middle" x="52" y="178" text-anchor="end">—</text><text x="52" y="318" text-anchor="end">0</text>
+                <text x="64" y="342" text-anchor="middle">0</text><text x="379" y="342" text-anchor="middle">250</text><text x="694" y="342" text-anchor="middle">500 years</text>
+              </g>
+              <path class="forcing-line" id="forcing-line" aria-hidden="true"></path>
+              <line class="forcing-time-line" id="forcing-time-line" x1="64" x2="64" y1="32" y2="312"></line>
+              <circle class="forcing-time-point" id="forcing-time-point" cx="64" cy="32" r="7"></circle>
+            </svg>
+            <label class="forcing-slider-label" for="forcing-time-slider">
+              <span class="visually-hidden">Years since emission in the forcing view</span>
+              <input id="forcing-time-slider" type="range" min="0" max="500" step="1" value="0" disabled />
+            </label>
+            <p class="chart-note forcing-note">
+              AR6 effective radiative forcing, including the assessed 5% rapid adjustment.
+              The line is instantaneous forcing, not the area accumulated under it.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="explanation-section" aria-labelledby="imbalance-title">
+        <div class="section-intro compact">
+          <p class="chapter-number">03</p>
+          <div>
+            <p class="eyebrow">Why remaining CO2 matters</p>
+            <h2 id="imbalance-title">A small change in the flow of energy.</h2>
+          </div>
+        </div>
+
+        <div class="energy-grid">
+          <div class="energy-copy">
+            <p class="lead">
+              CO2 absorbs and re-emits infrared radiation. Adding it reduces the
+              rate at which energy escapes to space.
+            </p>
+            <p>
+              Incoming energy then exceeds outgoing energy. This difference is
+              an <strong>energy imbalance</strong>. The climate warms, which
+              increases energy loss to space and partly restores the balance.
+            </p>
+          </div>
+
+          <div class="energy-diagram" aria-label="Conceptual diagram of Earth's energy imbalance">
+            <div class="space-label">Space</div>
+            <div class="flow incoming">
+              <span>energy in</span>
+              <i aria-hidden="true"></i>
+            </div>
+            <div class="flow outgoing">
+              <i aria-hidden="true"></i>
+              <span>slightly less energy out</span>
+            </div>
+            <div class="energy-earth" aria-hidden="true"></div>
+            <div class="imbalance-label">the difference remains</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="destinations-section" aria-labelledby="destinations-title">
+        <div class="destinations-copy">
+          <p class="eyebrow">Where has that additional energy gone?</p>
+          <h2 id="destinations-title">Mostly into the ocean.</h2>
+          <p>
+            AR6 assessed the observed increase in Earth's energy inventory over
+            1971–2018. These historical shares describe the whole climate system,
+            not the fate of our illustrative one-tonne pulse.
+          </p>
+        </div>
+
+        <div class="shares" role="img" aria-label="Ocean 91 percent, land 5 percent, melting ice 3 percent, atmosphere 1 percent">
+          <div class="shares-bar" aria-hidden="true">
+            <span class="share ocean" style="--share: 91"></span>
+            <span class="share land" style="--share: 5"></span>
+            <span class="share ice" style="--share: 3"></span>
+            <span class="share air" style="--share: 1"></span>
+          </div>
+          <dl class="shares-legend">
+            <div><dt><i class="ocean"></i>Ocean</dt><dd>91%</dd></div>
+            <div><dt><i class="land"></i>Land</dt><dd>5%</dd></div>
+            <div><dt><i class="ice"></i>Melting ice</dt><dd>3%</dd></div>
+            <div><dt><i class="air"></i>Atmosphere</dt><dd>1%</dd></div>
+          </dl>
+        </div>
+
+        <aside class="focus-note">
+          <span>Our focus from here</span>
+          <p>
+            We now follow CO2 in the atmosphere and the radiative forcing it
+            produces—not the small fraction of heat stored in the atmosphere.
+          </p>
+        </aside>
+      </section>
+
+      <section class="next-section" aria-labelledby="next-title">
+        <p class="eyebrow">The next idea</p>
+        <h2 id="next-title">Forcing is not yet temperature.</h2>
+        <p>
+          Next, we will show how the climate system responds to this forcing
+          over time—and why temperature follows its own delayed response.
+        </p>
+        <div class="next-line" aria-hidden="true"><span></span></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Prototype · CO2 pulse parameters reproduce the pinned IPCC AR6 Chapter 7 calculation.</p>
+      <a href="../docs/implementation-plan.md">Read the implementation plan</a>
+    </footer>
+  </body>
+</html>

@@ -1,5 +1,21 @@
 # Model status and known limitations
 
+## AR6 CO2 vertical slice
+
+The supported calculation in `src/radiativeforcing/ar6/co2.py` reproduces the
+CO2 branch of the IPCC AR6 WGI Chapter 7 metric generator pinned in
+`data/ar6/README.md`. Regression tests cover:
+
+- the four-box atmospheric impulse response;
+- concentration-to-forcing and atmosphere-mass conversions;
+- instantaneous forcing and analytical integration;
+- the two-timescale global temperature response; and
+- published CO2 AGWP20, AGWP100, AGWP500, AGTP50, and AGTP100 values.
+
+The browser pulse data is generated from this implementation. This validates
+the CO2 vertical slice only; non-CO2 carbon-cycle adjustments, indirect effects,
+and gas-specific metric values remain future Phase 2 work.
+
 This document records the behavior found during the Phase 1 repository audit.
 It describes the code as it exists; it is not a validation of the underlying
 scientific implementation.

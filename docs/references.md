@@ -1,5 +1,19 @@
 # References
 
+Primary AR6 sources now used by the supported CO2 vertical slice:
+
+- Forster, P., et al. (2021). “The Earth’s Energy Budget, Climate Feedbacks,
+  and Climate Sensitivity.” In *Climate Change 2021: The Physical Science
+  Basis*, Chapter 7. <https://doi.org/10.1017/9781009157896.009>
+- Smith, C., et al. (2021). “The Earth’s Energy Budget, Climate Feedbacks, and
+  Climate Sensitivity Supplementary Material.”
+  <https://www.ipcc.ch/report/ar6/wg1/downloads/report/IPCC_AR6_WGI_Chapter_07_Supplementary_Material.pdf>
+- Smith, C. J., et al. (2021). *IPCC AR6 WG1 Chapter 7 and friends multi-purpose
+  repository*. <https://doi.org/10.5281/zenodo.5211357>
+- Meinshausen, M., et al. (2020). “Historical greenhouse gas concentrations for
+  climate modelling (CMIP6).” *Geoscientific Model Development*, 13,
+  3571–3605. <https://doi.org/10.5194/gmd-13-3571-2020>
+
 The original repository bundled local copies of four papers. Phase 1 replaced
 those copies with stable citations to reduce repository size and avoid
 redistributing publications with differing license terms.

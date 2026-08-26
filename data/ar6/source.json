@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/IPCC-WG1/Chapter-7",
+  "repository_doi": "https://doi.org/10.5281/zenodo.5211357",
+  "commit": "2f948c862dbc158182ba47b863395ec1a4aa7998",
+  "commit_date": "2022-09-27T13:31:38Z",
+  "file": "data_output/7sm/metrics_supplement_cleaned.csv",
+  "raw_url": "https://raw.githubusercontent.com/IPCC-WG1/Chapter-7/2f948c862dbc158182ba47b863395ec1a4aa7998/data_output/7sm/metrics_supplement_cleaned.csv",
+  "upstream_sha256": "584fe16c1ffe454a0db4656857f54176cbf290d55a6775ea4e060ae2f461930c",
+  "local_sha256": "0eaa91b2626bb60b0c69be08ebc90ac1aab61c33baca402c8977dcbc93524943",
+  "local_normalization": "One terminating LF added; CSV records and values unchanged"
+}
