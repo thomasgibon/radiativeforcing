@@ -5,4 +5,3 @@
 *.csv text eol=lf
 *.dat text eol=lf
 *.ipynb text eol=lf
-

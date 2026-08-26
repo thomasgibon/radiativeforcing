@@ -11,4 +11,3 @@ These scripts are preserved as historical references and are not supported:
 
 Useful behavior should be reimplemented in the tested core package rather than
 repairing these files in place.
-

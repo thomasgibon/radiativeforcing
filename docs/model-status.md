@@ -48,4 +48,3 @@ tested calculations after the AR6 source audit.
 
 See `legacy/README.md`. Neither legacy script is part of the reproducible
 notebook path.
-

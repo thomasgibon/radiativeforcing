@@ -13,4 +13,3 @@ dist/
 .streamlit/secrets.toml
 *.mp4
 *.gif
-

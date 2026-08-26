@@ -29,4 +29,3 @@ Additional foundational sources cited by the notebooks:
   functions for the computation of greenhouse gas metrics: a multi-model
   analysis.” *Atmospheric Chemistry and Physics*, 13, 2793–2825.
   <https://doi.org/10.5194/acp-13-2793-2013>
-

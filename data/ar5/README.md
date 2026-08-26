@@ -25,4 +25,3 @@ dataset until the values have been checked against the cited sources.
 
 Phase 2 will begin with a separate AR6 source audit. Any AR6 data will be stored
 in its own versioned directory rather than silently replacing this baseline.
-

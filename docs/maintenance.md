@@ -29,4 +29,3 @@ explanation and visual narrative.
 Files in `legacy/` are retained for historical reference. They are not part of
 the supported execution path and should not be imported by notebooks, tests,
 or the future application.
-

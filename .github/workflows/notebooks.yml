@@ -36,4 +36,3 @@ jobs:
           uv run jupyter nbconvert --to notebook --execute
           --ExecutePreprocessor.timeout=300 --output-dir build/notebooks
           notebooks/02_emission_profiles_and_convolution.ipynb
-
