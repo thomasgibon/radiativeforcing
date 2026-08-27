@@ -45,10 +45,9 @@
           <p class="chapter-number">01</p>
           <div>
             <p class="eyebrow">A pulse does not vanish</p>
-            <h2 id="experiment-title">Release 1 tonne of CO2.</h2>
+            <h2 id="experiment-title">Release 1 tonne of CO<sub>2</sub>.</h2>
             <p>
-              The emission takes a moment. Exchanges with oceans, soils, and
-              vegetation then move parts of it out of the atmosphere at very
+              The emission takes an instant, we call it a "pulse". This pulse immediately increases the CO<sub>2</sub> concentration in the atmosphere, but exchanges with oceans, soils, and vegetation then move parts of it at very
               different rates. Beyond this 500-year window, ocean–sediment
               chemistry and rock weathering continue the drawdown over tens to
               hundreds of thousands of years and longer; those processes are
@@ -58,17 +57,13 @@
         </div>
 
         <nav class="causal-chain" aria-label="Climate cause-and-effect chain">
-          <span>Human activity</span>
+          <span class="current" aria-current="step">Emission</span>
           <i aria-hidden="true">→</i>
-          <span class="understood">Emission</span>
-          <i aria-hidden="true">→</i>
-          <span class="current" aria-current="step">Atmospheric concentration</span>
+          <span>Atmospheric concentration</span>
           <i aria-hidden="true">→</i>
           <span>Radiative forcing</span>
           <i aria-hidden="true">→</i>
           <span>Climate response</span>
-          <i aria-hidden="true">→</i>
-          <span>Impacts</span>
         </nav>
 
         <div class="experiment-card" data-state="idle">
@@ -178,15 +173,169 @@
           <div class="experiment-insight" id="experiment-insight" aria-live="polite">
             <span class="insight-rule" aria-hidden="true"></span>
             <p id="insight-copy">
-              Start the experiment to see why the date of an emission is not the end of its story.
+              Emit the tonne to begin.
             </p>
           </div>
         </div>
       </section>
 
+      <section class="concentration-section" id="concentration" aria-labelledby="concentration-title">
+        <div class="section-intro">
+          <p class="chapter-number">02.1</p>
+          <div>
+            <p class="eyebrow">From mass to concentration</p>
+            <h2 id="concentration-title">One tonne enters a very large atmosphere.</h2>
+            <p>
+              Concentration describes a proportion: parts per million, or ppm,
+              counts CO2 molecules among every million molecules of dry air.
+              For this calculation, the emitted pulse is treated as if it were
+              mixed through the global atmosphere.
+            </p>
+          </div>
+        </div>
+
+        <nav class="causal-chain" aria-label="Climate cause-and-effect chain">
+          <span class="understood">Emission</span><i aria-hidden="true">→</i>
+          <span class="current" aria-current="step">Atmospheric concentration</span><i aria-hidden="true">→</i>
+          <span>Radiative forcing</span><i aria-hidden="true">→</i>
+          <span>Climate response</span>
+        </nav>
+
+        <div class="concentration-card">
+          <div class="concentration-context">
+            <p class="data-label">Observed global background</p>
+            <strong>428.73 <small>ppm</small></strong>
+            <p>
+              May 2026 global marine-surface mean, preliminary.
+              <a href="https://www.gml.noaa.gov/ccgg/trends/global.html">NOAA GML</a>
+            </p>
+          </div>
+
+          <div class="concentration-conversion">
+            <div class="concentration-equation" aria-live="polite">
+              <div><strong>1 t</strong><span>emitted CO2</span></div>
+              <b aria-hidden="true">÷</b>
+              <div><strong id="pulse-concentration-conversion-value">—</strong><span>CO2 per ppm</span></div>
+              <b aria-hidden="true">=</b>
+              <div class="concentration-result"><strong id="pulse-concentration-increment-value">—</strong><span>ppm added</span></div>
+            </div>
+
+            <p class="concentration-note">
+              Keep the measured background and calculated increment separate:
+              combining them would imply precision the observation does not have.
+              Actual mixing also takes time.
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="decay-section" id="decay" aria-labelledby="decay-title">
+        <div class="section-intro">
+          <p class="chapter-number">02.2</p>
+          <div>
+            <p class="eyebrow">One curve, four fitted terms</p>
+            <h2 id="decay-title">Several timescales act at once.</h2>
+            <p>
+              The AR6 atmospheric response is a constant remainder plus three
+              exponential decays of various decay rates τ, which correspond to different decay mechanisms. Separate them first, then add their remaining
+              fractions at every year to recover the curve above.
+            </p>
+          </div>
+        </div>
+
+        <nav class="causal-chain" aria-label="Climate cause-and-effect chain">
+          <span class="understood">Emission</span><i aria-hidden="true">→</i>
+          <span class="current" aria-current="step">Atmospheric concentration</span><i aria-hidden="true">→</i>
+          <span>Radiative forcing</span><i aria-hidden="true">→</i>
+          <span>Climate response</span>
+        </nav>
+
+        <div class="decay-card" id="decay-card" data-state="separate">
+          <div class="decay-toolbar">
+            <button class="combine-button" id="combine-button" type="button" disabled>
+              <span aria-hidden="true">↓</span>
+              <span id="combine-label">Loading terms…</span>
+            </button>
+            <p>Dashed tangent: zero at τ. Curve marker: 37% remains at τ.</p>
+          </div>
+
+          <svg class="decay-chart" viewBox="0 0 1000 1030" role="img" aria-labelledby="decay-chart-title decay-chart-description">
+            <title id="decay-chart-title">Four fitted carbon dioxide response terms combining into the total atmospheric response</title>
+            <desc id="decay-chart-description">Four terms are shown separately above an empty total panel. Activate the combination to stack their contributions and reveal the total response.</desc>
+
+            <g class="decay-lane" transform="translate(0 0)" aria-hidden="true">
+              <text class="term-name" x="110" y="20">persistent</text><text class="term-detail" x="220" y="20">a₀ = 0.2173 · no decay within this fitted term</text>
+              <line x1="110" x2="910" y1="105" y2="105"></line><path class="component-line term-0" id="component-line-0"></path><path class="falling-line term-0" id="falling-line-0"></path>
+            </g>
+            <g class="decay-lane" transform="translate(0 150)" aria-hidden="true">
+              <text class="term-name" x="110" y="20">slow</text><text class="term-detail" x="168" y="20">a₁ = 0.2240 · τ = 394.4 y</text>
+              <line x1="110" x2="910" y1="105" y2="105"></line><line class="origin-tangent term-1" id="origin-tangent-1"></line><circle class="efold-point term-1" id="efold-point-1" r="4"></circle><text class="tau-label" id="tau-label-1">τ</text><path class="component-line term-1" id="component-line-1"></path><path class="falling-line term-1" id="falling-line-1"></path>
+            </g>
+            <g class="decay-lane" transform="translate(0 300)" aria-hidden="true">
+              <text class="term-name" x="110" y="20">medium</text><text class="term-detail" x="190" y="20">a₂ = 0.2824 · τ = 36.54 y</text>
+              <line x1="110" x2="910" y1="105" y2="105"></line><line class="origin-tangent term-2" id="origin-tangent-2"></line><circle class="efold-point term-2" id="efold-point-2" r="4"></circle><text class="tau-label" id="tau-label-2">τ</text><path class="component-line term-2" id="component-line-2"></path><path class="falling-line term-2" id="falling-line-2"></path>
+            </g>
+            <g class="decay-lane" transform="translate(0 450)" aria-hidden="true">
+              <text class="term-name" x="110" y="20">fast</text><text class="term-detail" x="168" y="20">a₃ = 0.2763 · τ = 4.304 y</text>
+              <line x1="110" x2="910" y1="105" y2="105"></line><line class="origin-tangent term-3" id="origin-tangent-3"></line><circle class="efold-point term-3" id="efold-point-3" r="4"></circle><text class="tau-label" id="tau-label-3">τ</text><path class="component-line term-3" id="component-line-3"></path><path class="falling-line term-3" id="falling-line-3"></path>
+            </g>
+
+            <g class="sum-panel" aria-hidden="true">
+              <text class="sum-title" x="110" y="650">sum at each year</text>
+              <text class="sum-equation" x="270" y="650">a₀ + a₁e⁻ᵗ⁄τ₁ + a₂e⁻ᵗ⁄τ₂ + a₃e⁻ᵗ⁄τ₃</text>
+              <rect x="110" y="680" width="800" height="250" rx="8"></rect>
+              <line class="sum-grid" x1="110" x2="910" y1="805" y2="805"></line>
+              <path class="sum-band term-0" id="sum-band-0"></path><path class="sum-band term-1" id="sum-band-1"></path><path class="sum-band term-2" id="sum-band-2"></path><path class="sum-band term-3" id="sum-band-3"></path>
+              <path class="sum-line" id="sum-line"></path>
+              <g class="sum-axis"><text x="98" y="686" text-anchor="end">100%</text><text x="98" y="811" text-anchor="end">50%</text><text x="98" y="936" text-anchor="end">0%</text><text x="110" y="961">0</text><text x="510" y="961" text-anchor="middle">250</text><text x="910" y="961" text-anchor="end">500 years</text></g>
+            </g>
+          </svg>
+
+          <aside class="fit-warning">
+            <strong>Model, not map</strong>
+            <p>
+              These are fitted mathematical models of an interacting carbon cycle—not
+              separate forest, soil, ocean, and geological boxes. Land and ocean
+              exchanges contribute across several timescales.
+            </p>
+          </aside>
+
+          <details class="source-disclosure">
+            <summary>More information: source parameter table</summary>
+            <div class="source-table-wrap">
+              <p>
+                These coefficients are reported in Millar et al. (2017), Table 1.
+                The AR5-IR values used here were fitted to the multi-model pulse
+                experiments reported by Joos et al. (2013) and retained in the
+                AR6 metric calculation.
+              </p>
+              <table>
+                <caption>Default impulse-response carbon-cycle parameters</caption>
+                <thead><tr><th>Parameter</th><th>AR5-IR</th><th>PI-IR</th><th>FAIR</th><th>Guiding analogue</th></tr></thead>
+                <tbody>
+                  <tr><th>a₀</th><td>0.2173</td><td>0.1545</td><td>0.2173</td><td>Geological re-absorption</td></tr>
+                  <tr><th>a₁</th><td>0.2240</td><td>0.1924</td><td>0.2240</td><td>Deep-ocean invasion/equilibration</td></tr>
+                  <tr><th>a₂</th><td>0.2824</td><td>0.2424</td><td>0.2824</td><td>Biospheric uptake/ocean thermocline invasion</td></tr>
+                  <tr><th>a₃</th><td>0.2763</td><td>0.4108</td><td>0.2763</td><td>Rapid biospheric uptake/ocean mixed-layer invasion</td></tr>
+                  <tr><th>τ₀ (years)</th><td>1 × 10⁶</td><td>1 × 10⁶</td><td>1 × 10⁶</td><td>Geological re-absorption</td></tr>
+                  <tr><th>τ₁ (years)</th><td>394.4</td><td>276.7</td><td>394.4</td><td>Deep-ocean invasion/equilibration</td></tr>
+                  <tr><th>τ₂ (years)</th><td>36.54</td><td>30.75</td><td>36.54</td><td>Biospheric uptake/ocean thermocline invasion</td></tr>
+                  <tr><th>τ₃ (years)</th><td>4.304</td><td>4.459</td><td>4.304</td><td>Rapid biospheric uptake/ocean mixed-layer invasion</td></tr>
+                </tbody>
+              </table>
+              <p class="source-citation">
+                Source: <a href="https://doi.org/10.5194/acp-17-7213-2017">Millar et al. (2017), Table 1</a>.
+                Underlying pulse-response ensemble: <a href="https://doi.org/10.5194/acp-13-2793-2013">Joos et al. (2013)</a>.
+              </p>
+            </div>
+          </details>
+        </div>
+      </section>
+
       <section class="forcing-section" id="forcing" aria-labelledby="forcing-title">
         <div class="section-intro">
-          <p class="chapter-number">02</p>
+          <p class="chapter-number">03.1</p>
           <div>
             <p class="eyebrow">From presence to influence</p>
             <h2 id="forcing-title">Remaining CO2 changes the flow of energy.</h2>
@@ -199,11 +348,10 @@
         </div>
 
         <nav class="causal-chain" aria-label="Climate cause-and-effect chain">
-          <span>Human activity</span><i aria-hidden="true">→</i>
           <span class="understood">Emission</span><i aria-hidden="true">→</i>
           <span class="understood">Atmospheric concentration</span><i aria-hidden="true">→</i>
           <span class="current" aria-current="step">Radiative forcing</span><i aria-hidden="true">→</i>
-          <span>Climate response</span><i aria-hidden="true">→</i><span>Impacts</span>
+          <span>Climate response</span>
         </nav>
 
         <div class="forcing-card">
@@ -244,7 +392,9 @@
               <input id="forcing-time-slider" type="range" min="0" max="500" step="1" value="0" disabled />
             </label>
             <p class="chart-note forcing-note">
-              AR6 effective radiative forcing, including the assessed 5% rapid adjustment.
+              AR6 effective radiative forcing, calculated at its
+              <span id="ar6-background-value">—</span> ppm reference background
+              and including the assessed 5% rapid adjustment.
               The line is instantaneous forcing, not the area accumulated under it.
             </p>
           </div>
@@ -253,12 +403,19 @@
 
       <section class="explanation-section" aria-labelledby="imbalance-title">
         <div class="section-intro compact">
-          <p class="chapter-number">03</p>
+          <p class="chapter-number">03.2</p>
           <div>
             <p class="eyebrow">Why remaining CO2 matters</p>
             <h2 id="imbalance-title">A small change in the flow of energy.</h2>
           </div>
         </div>
+
+        <nav class="causal-chain" aria-label="Climate cause-and-effect chain">
+          <span class="understood">Emission</span><i aria-hidden="true">→</i>
+          <span class="understood">Atmospheric concentration</span><i aria-hidden="true">→</i>
+          <span class="current" aria-current="step">Radiative forcing</span><i aria-hidden="true">→</i>
+          <span>Climate response</span>
+        </nav>
 
         <div class="energy-grid">
           <div class="energy-copy">
@@ -290,6 +447,13 @@
       </section>
 
       <section class="destinations-section" aria-labelledby="destinations-title">
+        <nav class="causal-chain" aria-label="Climate cause-and-effect chain">
+          <span class="understood">Emission</span><i aria-hidden="true">→</i>
+          <span class="understood">Atmospheric concentration</span><i aria-hidden="true">→</i>
+          <span class="understood">Radiative forcing</span><i aria-hidden="true">→</i>
+          <span class="current" aria-current="step">Climate response</span>
+        </nav>
+
         <div class="destinations-copy">
           <p class="eyebrow">Where has that additional energy gone?</p>
           <h2 id="destinations-title">Mostly into the ocean.</h2>
@@ -324,12 +488,287 @@
         </aside>
       </section>
 
+      <section class="method-section" id="temperature-method" aria-labelledby="method-title">
+        <div class="section-intro">
+          <p class="chapter-number">04.1</p>
+          <div>
+            <p class="eyebrow">Build one temperature value</p>
+            <h2 id="method-title">When forcing acts and how long the climate has responded.</h2>
+            <p>
+              Place the familiar forcing curve along one axis and the climate's
+              response to a brief unit of forcing along the other. At each
+              crossing, their product is one possible contribution to temperature.
+            </p>
+          </div>
+        </div>
+
+        <nav class="causal-chain" aria-label="Climate cause-and-effect chain">
+          <span class="understood">Emission</span><i aria-hidden="true">→</i>
+          <span class="understood">Atmospheric concentration</span><i aria-hidden="true">→</i>
+          <span class="understood">Radiative forcing</span><i aria-hidden="true">→</i>
+          <span class="current" aria-current="step">Climate response</span>
+        </nav>
+
+        <div class="method-inputs" aria-label="The two curves used in the construction">
+          <article class="method-input forcing-input">
+            <div>
+              <span>Already familiar</span>
+              <h3>1. Forcing after the CO2 pulse</h3>
+              <p>Each point says how strongly the remaining CO2 perturbs Earth's energy flow at that time.</p>
+            </div>
+            <svg viewBox="0 0 360 150" role="img" aria-labelledby="method-input-forcing-title">
+              <title id="method-input-forcing-title">The declining radiative forcing after the one-tonne CO2 pulse</title>
+              <path class="method-input-axis" d="M30 18 V125 H342"></path>
+              <path id="method-input-forcing-line" class="method-input-line"></path>
+              <text x="30" y="143">forcing time x</text>
+            </svg>
+          </article>
+          <article class="method-input thermal-input">
+            <div>
+              <span>One new curve</span>
+              <h3>2. Response to one brief forcing kick</h3>
+              <p>If forcing acted only for a brief instant, this curve says how much temperature response remains after a lag <em>y</em>.</p>
+            </div>
+            <svg viewBox="0 0 360 150" role="img" aria-labelledby="method-input-thermal-title">
+              <title id="method-input-thermal-title">The AR6 climate temperature impulse response</title>
+              <path class="method-input-axis" d="M30 18 V125 H342"></path>
+              <path id="method-input-thermal-line" class="method-input-line"></path>
+              <text x="30" y="143">response lag y</text>
+            </svg>
+          </article>
+        </div>
+
+        <div class="method-card" id="method-card" data-state="edges" data-view="3d">
+          <div class="method-toolbar">
+            <button class="combine-button" id="surface-build-button" type="button" disabled>
+              <span aria-hidden="true">↗</span><span id="surface-build-label">Loading surface…</span>
+            </button>
+            <button class="text-button" id="method-view-button" type="button" disabled>View from above</button>
+            <label class="method-rotate" for="method-rotation-slider">
+              <span>Rotate axes</span>
+              <input id="method-rotation-slider" type="range" min="-40" max="40" step="1" value="12" disabled />
+            </label>
+            <p>Observation year <strong id="method-year-value">0</strong></p>
+          </div>
+
+          <div class="method-stage">
+            <svg id="method-chart" class="method-chart" viewBox="0 0 920 640" role="img" aria-labelledby="method-chart-title method-chart-description">
+              <title id="method-chart-title">Forcing and thermal-response contribution surface</title>
+              <desc id="method-chart-description">The forcing-time and response-lag boundary curves are ready to be expanded into a contribution surface.</desc>
+              <g id="method-ground-grid" class="method-ground-grid" aria-hidden="true"></g>
+              <g id="method-surface-cells" class="method-surface-cells" aria-hidden="true"></g>
+              <g id="method-surface-grid" class="method-surface-grid" aria-hidden="true"></g>
+              <g class="method-boundaries" aria-hidden="true">
+                <path id="method-forcing-boundary" class="method-boundary forcing-boundary"></path>
+                <path id="method-thermal-boundary" class="method-boundary thermal-boundary"></path>
+              </g>
+              <path id="method-observation-plane" class="method-observation-plane" aria-hidden="true"></path>
+              <path id="method-diagonal-area" class="method-diagonal-area" aria-hidden="true"></path>
+              <path id="method-diagonal-line" class="method-diagonal-line" aria-hidden="true"></path>
+              <g class="method-axes" aria-hidden="true">
+                <text id="method-x-label">forcing time x</text>
+                <text id="method-y-label">response lag y</text>
+                <text id="method-z-label">temperature contribution</text>
+              </g>
+              <rect id="method-drag-surface" class="method-drag-surface" x="0" y="0" width="920" height="640" aria-hidden="true"></rect>
+            </svg>
+
+            <div class="method-legend" aria-hidden="true">
+              <span><i class="forcing-key"></i>forcing profile</span>
+              <span><i class="thermal-key"></i>thermal-response profile</span>
+              <span><i class="plane-key"></i>x + y = observation year</span>
+            </div>
+          </div>
+
+          <section class="method-output-panel" aria-labelledby="method-output-title">
+            <div class="method-output-copy">
+              <span>Output</span>
+              <h3 id="method-output-title">The sweep draws the temperature response</h3>
+              <p>The area beneath each highlighted diagonal produces one total. Place that total at the same year; successive totals trace this curve.</p>
+            </div>
+            <div class="method-output-chart-wrap">
+              <svg id="method-output-chart" viewBox="0 0 720 230" role="img" aria-labelledby="method-output-chart-title method-output-chart-description">
+                <title id="method-output-chart-title">Temperature response drawn by the diagonal sums</title>
+                <desc id="method-output-chart-description">No diagonal sums have been traced yet.</desc>
+                <g class="method-output-grid" aria-hidden="true">
+                  <line x1="55" y1="25" x2="55" y2="190"></line>
+                  <line x1="55" y1="190" x2="690" y2="190"></line>
+                  <line x1="55" y1="107.5" x2="690" y2="107.5"></line>
+                </g>
+                <path id="method-output-line" class="method-output-line" aria-hidden="true"></path>
+                <line id="method-output-time-line" class="method-output-time-line" y1="25" y2="190" aria-hidden="true"></line>
+                <circle id="method-output-point" class="method-output-point" r="5" aria-hidden="true"></circle>
+                <g class="method-output-axis" aria-hidden="true">
+                  <text x="55" y="214">0</text>
+                  <text x="690" y="214" text-anchor="end">500 years</text>
+                  <text x="55" y="17">temperature change</text>
+                </g>
+              </svg>
+              <div class="method-result" aria-live="polite">
+                <span>Diagonal sum at year <b id="method-result-year">0</b></span>
+                <strong id="method-temperature-value">0</strong><small>K per tonne</small>
+              </div>
+            </div>
+          </section>
+
+          <div class="method-controls">
+            <button class="play-button" id="method-play-button" type="button" aria-label="Sweep observation year" disabled><span aria-hidden="true">▶</span></button>
+            <label for="method-time-slider">
+              <span class="visually-hidden">Observation year</span>
+              <input id="method-time-slider" type="range" min="0" max="500" step="1" value="0" disabled />
+            </label>
+            <p class="method-control-note">Sweep the plane; each slice adds one point to the output curve above.</p>
+          </div>
+
+          <aside class="method-explanation">
+            <strong id="method-equation">x + y = t</strong>
+            <p>
+              The movable plane selects every pairing of forcing time and
+              response lag that reaches the same observation year. Drag the
+              plane or use the time control; the selected contributions add to
+              one point on the temperature curve.
+            </p>
+            <p class="method-name" id="method-name" hidden>
+              This diagonal sum is the operation called <strong>convolution</strong>.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="temperature-section" id="temperature" aria-labelledby="temperature-title">
+        <div class="section-intro">
+          <p class="chapter-number">04.2</p>
+          <div>
+            <p class="eyebrow">Forcing is not temperature</p>
+            <h2 id="temperature-title">The climate responds on more than one clock.</h2>
+            <p>
+              Radiative forcing is the input. Surface temperature responds as
+              the climate exchanges energy with the upper and deep ocean and
+              radiative feedbacks develop. AR6 represents that response with a
+              fast and a slow fitted thermal mode.
+            </p>
+          </div>
+        </div>
+
+        <nav class="causal-chain" aria-label="Climate cause-and-effect chain">
+          <span class="understood">Emission</span><i aria-hidden="true">→</i>
+          <span class="understood">Atmospheric concentration</span><i aria-hidden="true">→</i>
+          <span class="understood">Radiative forcing</span><i aria-hidden="true">→</i>
+          <span class="current" aria-current="step">Climate response</span>
+        </nav>
+
+        <div class="temperature-card" id="temperature-card" data-state="separate">
+          <div class="temperature-toolbar">
+            <button class="combine-button" id="temperature-combine-button" type="button" disabled>
+              <span aria-hidden="true">↓</span>
+              <span id="temperature-combine-label">Loading responses…</span>
+            </button>
+            <p>Year <strong id="temperature-year-value">0</strong> after the pulse</p>
+          </div>
+
+          <div class="temperature-body">
+            <div class="thermal-components">
+              <article class="thermal-term fast-term">
+                <div><span>Fast thermal mode</span><small>d₁ = 3.424 years</small></div>
+                <strong id="temperature-fast-value">—</strong>
+                <svg viewBox="0 0 320 110" aria-hidden="true"><path id="temperature-fast-line"></path></svg>
+              </article>
+              <div class="thermal-plus" aria-hidden="true">+</div>
+              <article class="thermal-term slow-term">
+                <div><span>Slow thermal mode</span><small>d₂ = 285.0 years</small></div>
+                <strong id="temperature-slow-value">—</strong>
+                <svg viewBox="0 0 320 110" aria-hidden="true"><path id="temperature-slow-line"></path></svg>
+              </article>
+              <p class="thermal-units">K of global mean surface warming per tonne emitted</p>
+            </div>
+
+            <div class="temperature-chart-panel">
+              <div class="panel-heading"><span>Total temperature response</span><span>Fast + slow</span></div>
+              <div class="temperature-chart-wrap">
+                <svg id="temperature-chart" class="temperature-chart" viewBox="0 0 720 360" role="img" aria-labelledby="temperature-chart-title temperature-chart-description">
+                  <title id="temperature-chart-title">Global mean surface temperature response to a one-tonne carbon dioxide pulse</title>
+                  <desc id="temperature-chart-description">The two thermal response contributions are initially separate. Combine them to reveal their sum through time.</desc>
+                  <g class="chart-grid" aria-hidden="true"><line x1="64" x2="694" y1="32" y2="32"></line><line x1="64" x2="694" y1="172" y2="172"></line><line x1="64" x2="694" y1="312" y2="312"></line></g>
+                  <g class="chart-axis" aria-hidden="true"><text id="temperature-axis-top" x="52" y="38" text-anchor="end">—</text><text id="temperature-axis-middle" x="52" y="178" text-anchor="end">—</text><text x="52" y="318" text-anchor="end">0</text><text x="64" y="342" text-anchor="middle">0</text><text x="379" y="342" text-anchor="middle">250</text><text x="694" y="342" text-anchor="middle">500 years</text></g>
+                  <path class="temperature-band fast-band" id="temperature-fast-band" aria-hidden="true"></path>
+                  <path class="temperature-band slow-band" id="temperature-slow-band" aria-hidden="true"></path>
+                  <path class="temperature-total-line" id="temperature-total-line" aria-hidden="true"></path>
+                  <line class="temperature-time-line" id="temperature-time-line" x1="64" x2="64" y1="32" y2="312"></line>
+                  <circle class="temperature-time-point" id="temperature-time-point" cx="64" cy="312" r="7"></circle>
+                </svg>
+                <div class="temperature-chart-idle">Combine the responses to reveal the total</div>
+              </div>
+              <label class="temperature-slider-label" for="temperature-time-slider">
+                <span class="visually-hidden">Years since emission in the temperature view</span>
+                <input id="temperature-time-slider" type="range" min="0" max="500" step="1" value="0" disabled />
+              </label>
+              <div class="temperature-total" aria-live="polite">
+                <span>Total at selected year</span><strong id="temperature-total-value">—</strong><small>K per tonne</small>
+              </div>
+            </div>
+          </div>
+
+          <aside class="temperature-insight">
+            <strong>Two responses, one temperature</strong>
+            <p>
+              The fast and slow thermal contributions overlap through time.
+              At each selected year, adding them gives the total temperature response.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="scale-section" id="scale" aria-labelledby="scale-title">
+        <div class="section-intro">
+          <p class="chapter-number">05</p>
+          <div>
+            <p class="eyebrow">Now change the scale</p>
+            <h2 id="scale-title">The same chain begins with billions of tonnes.</h2>
+            <p>
+              We used one tonne to make every causal step inspectable. Only now
+              do we enlarge the emission. The mass-to-concentration conversion
+              is the same; what changes is the scale of the increment.
+            </p>
+          </div>
+        </div>
+
+        <nav class="causal-chain complete-chain" aria-label="Completed pulse cause-and-effect chain">
+          <span class="understood">Emission</span><i aria-hidden="true">→</i>
+          <span class="understood">Atmospheric concentration</span><i aria-hidden="true">→</i>
+          <span class="understood">Radiative forcing</span><i aria-hidden="true">→</i>
+          <span class="understood">Climate response</span>
+        </nav>
+
+        <div class="scale-card">
+          <div class="scale-controls" id="concentration-scale-controls" aria-label="Emission mass to convert">
+            <button type="button" data-tonnes="1" aria-pressed="true">1 t</button>
+            <button type="button" data-tonnes="1000" aria-pressed="false">1 kt</button>
+            <button type="button" data-tonnes="1000000" aria-pressed="false">1 Mt</button>
+            <button type="button" data-tonnes="1000000000" aria-pressed="false">1 Gt</button>
+          </div>
+
+          <div class="concentration-equation scale-equation" aria-live="polite">
+            <div><strong id="concentration-mass-value">1 t</strong><span>emitted CO2</span></div>
+            <b aria-hidden="true">÷</b>
+            <div><strong id="concentration-conversion-value">—</strong><span>CO2 per ppm</span></div>
+            <b aria-hidden="true">=</b>
+            <div class="concentration-result"><strong id="concentration-increment-value">—</strong><span>ppm added</span></div>
+          </div>
+
+          <p class="concentration-note">
+            A real emissions history contains many such additions while land
+            and ocean uptake operate at the same time. Gross emissions and the
+            observed atmospheric increase are therefore not identical.
+          </p>
+        </div>
+      </section>
+
       <section class="next-section" aria-labelledby="next-title">
-        <p class="eyebrow">The next idea</p>
-        <h2 id="next-title">Forcing is not yet temperature.</h2>
+        <p class="eyebrow">The next comparison</p>
+        <h2 id="next-title">Other greenhouse gases follow the same chain differently.</h2>
         <p>
-          Next, we will show how the climate system responds to this forcing
-          over time—and why temperature follows its own delayed response.
+          Next, we will keep the pulse and mass fixed, change the gas, and see
+          how lifetime and radiative efficiency alter its forcing.
         </p>
         <div class="next-line" aria-hidden="true"><span></span></div>
       </section>

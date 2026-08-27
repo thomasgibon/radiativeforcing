@@ -5,7 +5,11 @@ from pathlib import Path
 
 import pytest
 
-from radiativeforcing.ar6.co2 import co2_agfp, co2_airborne_fraction
+from radiativeforcing.ar6.co2 import (
+    climate_temperature_impulse_response,
+    co2_agfp,
+    co2_airborne_fraction,
+)
 
 
 ROOT = Path(__file__).parents[1]
@@ -38,6 +42,9 @@ def test_pulse_response_starts_at_emitted_mass_and_declines():
     model = load_model()
 
     assert model["emission_mass_kg"] == 1000
+    assert model["schema_version"] == 3
+    assert model["kg_co2_per_ppm"] == pytest.approx(7.801178874697964e12)
+    assert model["reference_background_co2_ppm"] == pytest.approx(409.9)
     assert model["model_id"] == "ipcc-ar6-wgi-ch7-co2-pulse"
     assert model["series"]["airborne_fraction"][0] == pytest.approx(1.0)
 
@@ -48,6 +55,22 @@ def test_pulse_response_starts_at_emitted_mass_and_declines():
     assert fractions == pytest.approx(co2_airborne_fraction(range(501)))
     assert model["series"]["forcing_w_m2_per_tonne"] == pytest.approx(
         1000 * co2_agfp(range(501))
+    )
+    thermal = model["series"]["temperature_components_k_per_tonne"]
+    assert [fast + slow for fast, slow in zip(thermal["fast"], thermal["slow"], strict=True)] == pytest.approx(
+        model["series"]["temperature_change_k_per_tonne"]
+    )
+    assert model["series"]["thermal_impulse_response_k_per_w_m2_year"] == pytest.approx(
+        climate_temperature_impulse_response(range(501))
+    )
+    thermal_impulse = model["series"]["thermal_impulse_components_k_per_w_m2_year"]
+    assert [
+        fast + slow
+        for fast, slow in zip(
+            thermal_impulse["fast"], thermal_impulse["slow"], strict=True
+        )
+    ] == pytest.approx(
+        model["series"]["thermal_impulse_response_k_per_w_m2_year"]
     )
 
 
@@ -83,12 +106,46 @@ def test_opening_page_has_required_interaction_and_accessible_chart():
         "chart-title",
         "chart-description",
         "mass-value",
+        "concentration",
+        "concentration-mass-value",
+        "concentration-increment-value",
+        "concentration-scale-controls",
+        "pulse-concentration-conversion-value",
+        "pulse-concentration-increment-value",
+        "scale",
         "forcing",
         "forcing-chart",
         "forcing-chart-title",
         "forcing-chart-description",
         "forcing-time-slider",
         "forcing-value",
+        "decay",
+        "decay-card",
+        "combine-button",
+        "decay-chart-title",
+        "decay-chart-description",
+        "sum-line",
+        "temperature-method",
+        "method-chart",
+        "method-input-forcing-line",
+        "method-input-thermal-line",
+        "surface-build-button",
+        "method-rotation-slider",
+        "method-time-slider",
+        "method-observation-plane",
+        "method-diagonal-area",
+        "method-diagonal-line",
+        "method-output-chart",
+        "method-output-line",
+        "method-temperature-value",
+        "temperature",
+        "temperature-card",
+        "temperature-combine-button",
+        "temperature-chart",
+        "temperature-chart-title",
+        "temperature-chart-description",
+        "temperature-time-slider",
+        "temperature-total-value",
     }
     assert required_ids <= parser.ids
     assert parser.scripts == ["./app.js"]

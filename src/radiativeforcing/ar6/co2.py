@@ -215,11 +215,16 @@ def climate_temperature_impulse_response(
     )
 
 
-def co2_agtp(
+def co2_agtp_components(
     horizon_years: ArrayLike,
     parameters: CO2PulseParameters = AR6_CO2,
 ) -> NDArray[np.float64]:
-    """Return global temperature change at a horizon in K per kg emitted."""
+    """Return the two thermal-mode AGTP contributions in K per kg.
+
+    The final axis follows ``thermal_times_years``: the fast and slow response
+    modes. Their sum is the total absolute global temperature-change
+    potential returned by :func:`co2_agtp`.
+    """
 
     horizon = _years(horizon_years)
     fractions = np.asarray(parameters.partition_fractions)
@@ -230,15 +235,14 @@ def co2_agtp(
     )
     forcing_per_kg = co2_effective_forcing_per_kg(parameters)
 
-    persistent = np.sum(
+    persistent = (
         fractions[0]
         * thermal_coefficients
-        * (1 - np.exp(-horizon[..., np.newaxis] / thermal_times)),
-        axis=-1,
+        * (1 - np.exp(-horizon[..., np.newaxis] / thermal_times))
     )
-    finite = np.zeros_like(horizon, dtype=float)
+    finite = np.zeros(horizon.shape + thermal_times.shape, dtype=float)
     for fraction, lifetime in zip(fractions[1:], lifetimes, strict=True):
-        finite += np.sum(
+        finite += (
             fraction
             * lifetime
             * thermal_coefficients
@@ -246,10 +250,18 @@ def co2_agtp(
                 np.exp(-horizon[..., np.newaxis] / lifetime)
                 - np.exp(-horizon[..., np.newaxis] / thermal_times)
             )
-            / (lifetime - thermal_times),
-            axis=-1,
+            / (lifetime - thermal_times)
         )
     return forcing_per_kg * (persistent + finite)
+
+
+def co2_agtp(
+    horizon_years: ArrayLike,
+    parameters: CO2PulseParameters = AR6_CO2,
+) -> NDArray[np.float64]:
+    """Return global temperature change at a horizon in K per kg emitted."""
+
+    return np.sum(co2_agtp_components(horizon_years, parameters), axis=-1)
 
 
 def co2_pulse_response(

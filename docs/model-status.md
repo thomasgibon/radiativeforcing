@@ -9,7 +9,8 @@ CO2 branch of the IPCC AR6 WGI Chapter 7 metric generator pinned in
 - the four-box atmospheric impulse response;
 - concentration-to-forcing and atmosphere-mass conversions;
 - instantaneous forcing and analytical integration;
-- the two-timescale global temperature response; and
+- the two-timescale global temperature response, including independently
+  exported fast and slow contributions that regress to the total; and
 - published CO2 AGWP20, AGWP100, AGWP500, AGTP50, and AGTP100 values.
 
 The browser pulse data is generated from this implementation. This validates

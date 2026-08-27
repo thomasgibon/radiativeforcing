@@ -9,10 +9,13 @@ import numpy as np
 
 from radiativeforcing.ar6.co2 import (
     AR6_CO2,
+    climate_temperature_impulse_response,
     co2_agtp,
+    co2_agtp_components,
     co2_agwp,
     co2_effective_forcing_per_kg,
     co2_effective_radiative_efficiency_ppb,
+    co2_kg_per_ppm,
     co2_pulse_response,
 )
 
@@ -27,8 +30,14 @@ def rounded(values, significant_digits=12):
 
 def build_payload():
     years = np.arange(0.0, 501.0, 1.0)
-    response = co2_pulse_response(years, emission_mass_kg=1000.0)
     parameters = AR6_CO2
+    response = co2_pulse_response(years, emission_mass_kg=1000.0)
+    temperature_components = 1000.0 * co2_agtp_components(years)
+    thermal_times = np.asarray(parameters.thermal_times_years)
+    thermal_coefficients = np.asarray(parameters.thermal_coefficients_k_per_w_m2)
+    thermal_kernel_components = (
+        thermal_coefficients / thermal_times
+    ) * np.exp(-years[:, np.newaxis] / thermal_times)
     calculated = {
         "agwp20_w_m2_year_kg": float(co2_agwp(20)),
         "agwp100_w_m2_year_kg": float(co2_agwp(100)),
@@ -37,12 +46,14 @@ def build_payload():
         "agtp100_k_kg": float(co2_agtp(100)),
     }
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "generated_by": "scripts/export_browser_data.py",
         "model_id": "ipcc-ar6-wgi-ch7-co2-pulse",
         "display_name": "CO2 pulse response (IPCC AR6)",
         "assessment_status": "Reproduces the IPCC AR6 WGI Chapter 7 CO2 metric calculation",
         "emission_mass_kg": 1000,
+        "kg_co2_per_ppm": co2_kg_per_ppm(),
+        "reference_background_co2_ppm": parameters.background_co2_ppm,
         "effective_radiative_efficiency_w_m2_ppb": co2_effective_radiative_efficiency_ppb(),
         "initial_forcing_w_m2_per_kg": co2_effective_forcing_per_kg(),
         "components": [
@@ -73,6 +84,17 @@ def build_payload():
             "temperature_change_k_per_tonne": rounded(
                 response.temperature_change_k
             ),
+            "temperature_components_k_per_tonne": {
+                "fast": rounded(temperature_components[:, 0]),
+                "slow": rounded(temperature_components[:, 1]),
+            },
+            "thermal_impulse_response_k_per_w_m2_year": rounded(
+                climate_temperature_impulse_response(years)
+            ),
+            "thermal_impulse_components_k_per_w_m2_year": {
+                "fast": rounded(thermal_kernel_components[:, 0]),
+                "slow": rounded(thermal_kernel_components[:, 1]),
+            },
         },
         "metrics": {
             "calculated": calculated,

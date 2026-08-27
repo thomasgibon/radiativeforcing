@@ -9,6 +9,7 @@ from radiativeforcing.ar6.co2 import (
     climate_temperature_impulse_response,
     co2_agfp,
     co2_agtp,
+    co2_agtp_components,
     co2_agwp,
     co2_airborne_fraction,
     co2_effective_radiative_efficiency_ppb,
@@ -77,6 +78,15 @@ def test_agtp_reproduces_published_ar6_rounding(horizon, column):
         published_co2_metrics()[column],
         rel=5e-3,
     )
+
+
+def test_thermal_components_sum_to_total_temperature_response():
+    years = np.arange(0, 501)
+    components = co2_agtp_components(years)
+
+    assert components.shape == (501, 2)
+    assert np.all(components >= 0)
+    assert np.sum(components, axis=-1) == pytest.approx(co2_agtp(years))
 
 
 def test_analytic_metrics_match_numerical_integrals():

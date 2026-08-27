@@ -12,8 +12,13 @@
   --land: #bf7c3d;
   --ice: #9dcbd5;
   --air: #d7d1e9;
+  --concentration-color: #6e8190;
+  --forcing-color: #f2997e;
+  --climate-color: #276979;
+  --climate-fast-color: #55a0a5;
   --line: rgba(23, 42, 50, 0.18);
   --shadow: 0 24px 70px rgba(35, 45, 45, 0.1);
+  --data-font: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
 }
@@ -212,9 +217,14 @@ h2 {
 }
 
 .experiment-section,
+.concentration-section,
+.decay-section,
 .forcing-section,
 .explanation-section,
 .destinations-section,
+.method-section,
+.temperature-section,
+.scale-section,
 .next-section {
   max-width: 1280px;
   margin: 0 auto;
@@ -393,6 +403,8 @@ a:focus-visible {
 .year-readout strong,
 .percent-readout {
   color: var(--ink);
+  font-family: var(--data-font);
+  font-variant-numeric: tabular-nums;
 }
 
 .atmosphere {
@@ -514,9 +526,10 @@ a:focus-visible {
 
 .mass-readout strong {
   min-width: 4ch;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--data-font);
   font-size: clamp(2.4rem, 4.5vw, 4rem);
   font-weight: 400;
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
   line-height: 1;
   text-align: right;
@@ -553,13 +566,14 @@ a:focus-visible {
 
 .chart-axis text {
   fill: var(--ink-soft);
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--data-font);
   font-size: 12px;
+  font-variant-numeric: tabular-nums;
 }
 
 .response-line {
   fill: none;
-  stroke: var(--accent);
+  stroke: var(--concentration-color);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 3;
@@ -667,14 +681,474 @@ input[type="range"] {
 }
 
 .experiment-insight p {
-  max-width: 780px;
+  max-width: none;
   margin: 0;
+  overflow: hidden;
+  font-family: var(--data-font);
+  font-size: clamp(0.68rem, 1.15vw, 0.88rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.concentration-section {
+  padding-top: 11rem;
+}
+
+.concentration-card {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.68fr) minmax(500px, 1.32fr);
+  overflow: hidden;
+  border: 1px solid rgba(23, 42, 50, 0.12);
+  border-radius: 1.5rem;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.concentration-context,
+.concentration-conversion {
+  padding: clamp(2rem, 4vw, 3.5rem);
+}
+
+.concentration-context {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.data-label {
+  margin: 0 0 1.5rem;
+  color: rgba(246, 242, 233, 0.62);
+  font-family: var(--data-font);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.concentration-context > strong {
+  font-family: var(--data-font);
+  font-size: clamp(2.8rem, 5vw, 4.7rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.concentration-context > strong small {
+  color: #f2997e;
+  font-size: 0.28em;
+  letter-spacing: 0;
+}
+
+.concentration-context > p:last-child {
+  max-width: 290px;
+  margin: 1.5rem 0 0;
+  color: rgba(246, 242, 233, 0.62);
+  font-size: 0.72rem;
+}
+
+.concentration-context a {
+  color: var(--paper);
+}
+
+.scale-controls {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.scale-controls button {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.55rem 0.7rem;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-family: var(--data-font);
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.scale-controls button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: white;
+}
+
+.scale-controls button:focus-visible {
+  outline: 3px solid rgba(233, 95, 60, 0.38);
+  outline-offset: 3px;
+}
+
+.concentration-equation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.3fr);
+  gap: 1rem;
+  align-items: center;
+  padding-top: 2.5rem;
+}
+
+.concentration-equation div {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.concentration-equation strong {
+  font-family: var(--data-font);
+  font-size: clamp(1.15rem, 2.25vw, 2rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.concentration-equation span {
+  color: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.concentration-equation b {
+  color: var(--accent);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.15rem;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.concentration-result strong {
+  color: var(--accent-dark);
+}
+
+.concentration-note {
+  margin: 2.5rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+}
+
+.concentration-conversion > .concentration-equation {
+  padding-top: 0;
+}
+
+.scale-forward {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 2rem;
+  margin-top: 1.25rem;
+  padding: 1.4rem 2rem;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+}
+
+.scale-forward span {
+  color: var(--accent-dark);
+  font-family: var(--data-font);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.scale-forward p {
+  max-width: 720px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
 }
 
 .forcing-section {
   padding-top: 11rem;
+}
+
+.decay-section {
+  padding-top: 11rem;
+}
+
+.decay-card {
+  overflow: hidden;
+  border: 1px solid rgba(23, 42, 50, 0.12);
+  border-radius: 1.5rem;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.decay-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 86px;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.decay-toolbar p {
+  margin: 0 0 0 auto;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+}
+
+.combine-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 13.5rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.8rem 1.25rem;
+  background: var(--ink);
+  color: var(--white);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.combine-button span:first-child {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  font-size: 1rem;
+}
+
+.combine-button:disabled {
+  cursor: wait;
+  opacity: 0.5;
+}
+
+.combine-button:focus-visible {
+  outline: 3px solid rgba(233, 95, 60, 0.38);
+  outline-offset: 4px;
+}
+
+.decay-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: clamp(1rem, 2.5vw, 2rem);
+}
+
+.decay-lane > line {
+  stroke: var(--line);
+  stroke-dasharray: 3 7;
+}
+
+.term-name,
+.term-detail,
+.sum-title,
+.sum-equation,
+.sum-axis text {
+  font-family: var(--data-font);
+  font-variant-numeric: tabular-nums;
+}
+
+.term-name,
+.sum-title {
+  fill: var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.term-detail,
+.sum-equation,
+.sum-axis text,
+.tau-label {
+  fill: var(--ink-soft);
+  font-size: 12px;
+}
+
+.component-line,
+.falling-line,
+.sum-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.origin-tangent {
+  stroke: var(--term-color);
+  stroke-dasharray: 4 6;
+  stroke-width: 1.5;
+  opacity: 0.62;
+}
+
+.efold-point {
+  fill: var(--white);
+  stroke: var(--term-color);
+  stroke-width: 2;
+}
+
+.tau-label {
+  fill: var(--term-color);
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.term-0 { --term-color: #6e8190; }
+.term-1 { --term-color: #276979; }
+.term-2 { --term-color: #bf7c3d; }
+.term-3 { --term-color: #e95f3c; }
+
+.component-line,
+.falling-line {
+  stroke: var(--term-color);
+}
+
+.falling-line {
+  opacity: 0.72;
+  transition: transform 850ms cubic-bezier(0.22, 0.72, 0.25, 1), opacity 420ms ease;
+  transition-delay: var(--term-delay);
+}
+
+.sum-panel > rect {
+  fill: #f2f4f0;
+  stroke: var(--line);
+}
+
+.sum-grid {
+  stroke: rgba(23, 42, 50, 0.12);
+  stroke-dasharray: 3 7;
+}
+
+.sum-band {
+  fill: var(--term-color);
+  opacity: 0;
+  transform: translateY(-18px);
+  transition: opacity 450ms ease, transform 650ms ease;
+  transition-delay: var(--term-delay);
+}
+
+.sum-line {
+  stroke: var(--ink);
+  stroke-width: 4;
+  stroke-dasharray: 1300;
+  stroke-dashoffset: 1300;
+  transition: stroke-dashoffset 1100ms ease 850ms;
+}
+
+.decay-card[data-state="combined"] .falling-line {
+  opacity: 0;
+  transform: translateY(var(--fall-y));
+}
+
+.decay-card[data-state="combined"] .sum-band {
+  opacity: 0.72;
+  transform: translateY(0);
+}
+
+.decay-card[data-state="combined"] .sum-line {
+  stroke-dashoffset: 0;
+}
+
+.fit-warning {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.4rem 2rem;
+  border-top: 1px solid var(--line);
+  background: #fff9f1;
+}
+
+.fit-warning strong {
+  color: var(--accent-dark);
+  font-family: var(--data-font);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fit-warning p {
+  max-width: 780px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.source-disclosure {
+  border-top: 1px solid var(--line);
+}
+
+.source-disclosure summary {
+  padding: 1.25rem 2rem;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--data-font);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.source-disclosure summary::marker {
+  color: var(--accent);
+}
+
+.source-table-wrap {
+  padding: 0 2rem 2rem;
+  overflow-x: auto;
+}
+
+.source-table-wrap > p {
+  max-width: 780px;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.source-table-wrap table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-family: var(--data-font);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.source-table-wrap caption {
+  padding: 0.8rem 0;
+  color: var(--ink);
+  font-weight: 700;
+  text-align: left;
+}
+
+.source-table-wrap th,
+.source-table-wrap td {
+  padding: 0.65rem 0.75rem;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.source-table-wrap thead th {
+  color: var(--ink-soft);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.source-table-wrap tbody th {
+  color: var(--accent-dark);
+}
+
+.source-table-wrap .source-citation {
+  max-width: none;
+  margin-top: 1rem;
+  font-size: 0.72rem;
 }
 
 .forcing-card {
@@ -714,6 +1188,8 @@ input[type="range"] {
 
 .forcing-kicker strong {
   color: var(--paper);
+  font-family: var(--data-font);
+  font-variant-numeric: tabular-nums;
 }
 
 .forcing-equation {
@@ -736,9 +1212,10 @@ input[type="range"] {
 }
 
 .forcing-equation strong {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--data-font);
   font-size: clamp(1.5rem, 2.5vw, 2.35rem);
   font-weight: 400;
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.025em;
   line-height: 1.1;
 }
@@ -788,7 +1265,7 @@ input[type="range"] {
 
 .forcing-line {
   fill: none;
-  stroke: #f2997e;
+  stroke: var(--forcing-color);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 3;
@@ -960,6 +1437,25 @@ input[type="range"] {
   color: var(--paper);
 }
 
+.destinations-section > .causal-chain {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-bottom: 0;
+  color: rgba(246, 242, 233, 0.4);
+}
+
+.destinations-section > .causal-chain .understood {
+  color: rgba(246, 242, 233, 0.8);
+}
+
+.destinations-section > .causal-chain i {
+  color: rgba(246, 242, 233, 0.25);
+}
+
+.destinations-section > .causal-chain .current {
+  color: #f2997e;
+}
+
 .destinations-copy p:not(.eyebrow) {
   max-width: 520px;
   color: rgba(246, 242, 233, 0.7);
@@ -1100,6 +1596,722 @@ footer p {
   border: 0 !important;
 }
 
+.method-section {
+  padding-top: 11rem;
+}
+
+.method-inputs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.method-input {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(220px, 0.9fr);
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--white);
+}
+
+.method-input span,
+.method-output-copy > span {
+  color: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.method-input h3,
+.method-output-copy h3 {
+  margin: 0.35rem 0 0.65rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.method-input p,
+.method-output-copy p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+}
+
+.method-input svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.method-input svg text {
+  fill: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 11px;
+}
+
+.method-input-axis {
+  fill: none;
+  stroke: var(--line);
+}
+
+.method-input-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.forcing-input .method-input-line { stroke: var(--forcing-color); }
+.thermal-input .method-input-line { stroke: var(--climate-color); }
+
+.method-card {
+  overflow: hidden;
+  border: 1px solid rgba(23, 42, 50, 0.12);
+  border-radius: 1.5rem;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.method-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 86px;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.method-toolbar > p {
+  margin: 0 0 0 auto;
+  color: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.method-toolbar > p strong {
+  color: var(--ink);
+}
+
+.method-rotate {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.method-rotate input {
+  width: 7rem;
+}
+
+.method-card[data-view="top"] .method-rotate {
+  opacity: 0.4;
+}
+
+.method-stage {
+  padding: clamp(1rem, 3vw, 2.5rem) clamp(0.75rem, 2vw, 2rem) 1rem;
+  background: #eef2ef;
+}
+
+.method-chart {
+  display: block;
+  width: min(100%, 1040px);
+  height: auto;
+  margin: 0 auto;
+  overflow: visible;
+  touch-action: none;
+}
+
+.method-ground-grid path {
+  fill: none;
+  stroke: rgba(23, 42, 50, 0.15);
+  stroke-dasharray: 3 7;
+  stroke-width: 1;
+}
+
+.method-surface-cells,
+.method-surface-grid,
+.method-observation-plane,
+.method-diagonal-area,
+.method-diagonal-line {
+  opacity: 0;
+  transition: opacity 650ms ease;
+}
+
+.method-surface-cells path {
+  stroke: none;
+}
+
+.method-surface-grid path {
+  fill: none;
+  stroke: rgba(246, 242, 233, 0.32);
+  stroke-width: 0.8;
+}
+
+.method-boundary {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 5;
+}
+
+.forcing-boundary {
+  stroke: var(--forcing-color);
+}
+
+.thermal-boundary {
+  stroke: var(--climate-color);
+}
+
+.method-observation-plane {
+  fill: rgba(233, 95, 60, 0.12);
+  stroke: rgba(233, 95, 60, 0.78);
+  stroke-dasharray: 7 6;
+  stroke-width: 2;
+}
+
+.method-diagonal-line {
+  fill: none;
+  stroke: #fff9f1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 5;
+  filter: drop-shadow(0 1px 2px rgba(23, 42, 50, 0.72));
+}
+
+.method-diagonal-area {
+  fill: rgba(39, 105, 121, 0.34);
+  stroke: none;
+}
+
+.method-card[data-state="surface"] .method-surface-cells,
+.method-card[data-state="surface"] .method-surface-grid,
+.method-card[data-state="surface"] .method-observation-plane,
+.method-card[data-state="surface"] .method-diagonal-area,
+.method-card[data-state="surface"] .method-diagonal-line {
+  opacity: 1;
+}
+
+.method-card[data-state="surface"] .method-boundary {
+  stroke-width: 3;
+}
+
+.method-card[data-view="top"] .method-observation-plane {
+  fill: none;
+  stroke-width: 5;
+}
+
+.method-card[data-view="top"] .method-diagonal-line {
+  stroke-width: 3;
+}
+
+.method-axes text {
+  fill: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.method-x-label {
+  text-anchor: start;
+}
+
+.method-y-label {
+  text-anchor: end;
+}
+
+.method-z-label {
+  text-anchor: start;
+}
+
+.method-drag-surface {
+  fill: transparent;
+  cursor: ew-resize;
+  pointer-events: all;
+}
+
+.method-card[data-state="edges"] .method-drag-surface {
+  cursor: default;
+}
+
+.method-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 0.25rem;
+  color: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+}
+
+.method-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.method-legend i {
+  width: 1.5rem;
+  height: 3px;
+  background: var(--ink);
+}
+
+.method-legend .forcing-key { background: var(--forcing-color); }
+.method-legend .thermal-key { background: var(--climate-color); }
+.method-legend .plane-key {
+  height: 0.7rem;
+  border: 1px dashed var(--accent);
+  background: rgba(233, 95, 60, 0.12);
+}
+
+.method-controls {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(160px, 1fr) minmax(260px, auto);
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.method-control-note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+}
+
+.method-output-panel {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.58fr) minmax(460px, 1.42fr);
+  gap: 2rem;
+  align-items: center;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--line);
+  background: var(--white);
+}
+
+.method-output-chart-wrap {
+  min-width: 0;
+}
+
+.method-output-chart-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.method-output-grid line {
+  stroke: rgba(23, 42, 50, 0.14);
+  stroke-dasharray: 3 7;
+}
+
+.method-output-line {
+  fill: none;
+  stroke: var(--climate-color);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.method-output-time-line {
+  stroke: var(--ink-soft);
+  stroke-dasharray: 3 5;
+}
+
+.method-output-point {
+  fill: var(--white);
+  stroke: var(--climate-color);
+  stroke-width: 4;
+}
+
+.method-output-axis text {
+  fill: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 11px;
+}
+
+.method-card[data-state="edges"] .method-output-line,
+.method-card[data-state="edges"] .method-output-time-line,
+.method-card[data-state="edges"] .method-output-point {
+  opacity: 0;
+}
+
+.method-output-panel .method-result {
+  justify-content: end;
+  margin-top: -0.75rem;
+}
+
+.method-controls label {
+  display: flex;
+}
+
+.method-result {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: baseline;
+  column-gap: 0.65rem;
+  font-family: var(--data-font);
+  font-variant-numeric: tabular-nums;
+}
+
+.method-result span {
+  grid-column: 1 / -1;
+  color: var(--ink-soft);
+  font-size: 0.64rem;
+  text-transform: uppercase;
+}
+
+.method-result strong {
+  color: var(--climate-color);
+  font-size: clamp(1rem, 2vw, 1.45rem);
+  font-weight: 400;
+}
+
+.method-result small {
+  color: var(--ink-soft);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+}
+
+.method-explanation {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr) minmax(220px, 0.7fr);
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--line);
+  background: #fff9f1;
+}
+
+.method-explanation > strong {
+  color: var(--accent-dark);
+  font-family: var(--data-font);
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.method-explanation p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.method-name {
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--line);
+}
+
+.method-name strong {
+  color: var(--ink);
+  font-family: var(--data-font);
+}
+
+.temperature-section {
+  padding-top: 11rem;
+}
+
+.temperature-card {
+  overflow: hidden;
+  border: 1px solid rgba(23, 42, 50, 0.12);
+  border-radius: 1.5rem;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.temperature-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 86px;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.temperature-toolbar > p {
+  margin: 0 0 0 auto;
+  color: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.temperature-toolbar > p strong { color: var(--ink); }
+
+.temperature-body {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.78fr) minmax(500px, 1.22fr);
+  min-height: 610px;
+}
+
+.thermal-components,
+.temperature-chart-panel {
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.thermal-components {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid var(--line);
+  background: #f2f4f0;
+}
+
+.thermal-term {
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: var(--white);
+  transition: transform 600ms ease, box-shadow 600ms ease;
+}
+
+.thermal-term > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--data-font);
+  font-size: 0.68rem;
+}
+
+.thermal-term > div span {
+  color: var(--ink);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.thermal-term > div small {
+  color: var(--ink-soft);
+  font-size: inherit;
+}
+
+.thermal-term > strong {
+  display: block;
+  min-height: 1.5em;
+  margin-top: 0.7rem;
+  font-family: var(--data-font);
+  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+}
+
+.thermal-term svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 0.4rem;
+  overflow: visible;
+}
+
+.thermal-term svg path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+.fast-term svg path { stroke: var(--climate-fast-color); }
+.slow-term svg path { stroke: var(--climate-color); }
+
+.thermal-plus {
+  align-self: center;
+  margin: 0.4rem 0;
+  color: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 1.4rem;
+}
+
+.thermal-units {
+  margin: 1.25rem 0 0;
+  color: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 0.64rem;
+  line-height: 1.4;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.temperature-card[data-state="combined"] .thermal-term {
+  box-shadow: 0 8px 25px rgba(23, 42, 50, 0.08);
+  transform: translateX(0.35rem);
+}
+
+.temperature-chart-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.temperature-chart-wrap {
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+.temperature-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.temperature-band {
+  opacity: 0;
+  transform: translateY(-14px);
+  transition: opacity 550ms ease, transform 700ms ease;
+}
+
+.fast-band { fill: rgba(85, 160, 165, 0.62); }
+.slow-band {
+  fill: rgba(39, 105, 121, 0.52);
+  transition-delay: 180ms;
+}
+
+.temperature-total-line {
+  fill: none;
+  stroke: var(--climate-color);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  transition: stroke-dashoffset 950ms ease 400ms;
+}
+
+.temperature-time-line {
+  stroke: var(--ink);
+  stroke-dasharray: 3 5;
+  opacity: 0;
+  transition: opacity 300ms ease 500ms;
+}
+
+.temperature-time-point {
+  fill: var(--white);
+  stroke: var(--ink);
+  stroke-width: 3;
+  opacity: 0;
+  transition: opacity 300ms ease 500ms;
+}
+
+.temperature-card[data-state="combined"] .temperature-band {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.temperature-card[data-state="combined"] .temperature-total-line { stroke-dashoffset: 0; }
+.temperature-card[data-state="combined"] .temperature-time-line,
+.temperature-card[data-state="combined"] .temperature-time-point { opacity: 1; }
+
+.temperature-chart-idle {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+  font-family: var(--data-font);
+  font-size: 0.76rem;
+  transition: opacity 250ms ease;
+}
+
+.temperature-card[data-state="combined"] .temperature-chart-idle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.temperature-slider-label {
+  display: flex;
+  margin: 0.8rem 0 0 3.5rem;
+}
+
+.temperature-total {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin: auto 0 0 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--data-font);
+  font-variant-numeric: tabular-nums;
+}
+
+.temperature-total span,
+.temperature-total small {
+  color: var(--ink-soft);
+  font-size: 0.64rem;
+  text-transform: uppercase;
+}
+
+.temperature-total strong {
+  color: var(--climate-color);
+  font-size: clamp(1.15rem, 2vw, 1.65rem);
+  font-weight: 400;
+}
+
+.temperature-insight {
+  display: grid;
+  grid-template-columns: 12rem minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.4rem 2rem;
+  border-top: 1px solid var(--line);
+  background: #fff9f1;
+}
+
+.temperature-insight strong {
+  color: var(--accent-dark);
+  font-family: var(--data-font);
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.temperature-insight p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+}
+
+.scale-section {
+  padding-top: 11rem;
+}
+
+.scale-card {
+  padding: clamp(2rem, 4vw, 3.5rem);
+  border: 1px solid rgba(23, 42, 50, 0.12);
+  border-radius: 1.5rem;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+
+.scale-card .scale-controls {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.scale-equation {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.scale-card .concentration-note {
+  max-width: 720px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.complete-chain .understood {
+  position: relative;
+}
+
 @media (max-width: 900px) {
   .site-header {
     padding: 1.5rem;
@@ -1120,16 +2332,25 @@ footer p {
   }
 
   .experiment-section,
+  .concentration-section,
+  .decay-section,
   .forcing-section,
   .explanation-section,
   .destinations-section,
+  .method-section,
+  .temperature-section,
+  .scale-section,
   .next-section {
     padding: 6rem 1.5rem;
   }
 
   .experiment-body,
+  .concentration-card,
   .forcing-card,
   .energy-grid,
+  .method-inputs,
+  .method-output-panel,
+  .temperature-body,
   .destinations-section {
     grid-template-columns: 1fr;
   }
@@ -1144,6 +2365,24 @@ footer p {
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   }
 
+  .thermal-components {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .scale-forward {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .decay-chart {
+    min-width: 720px;
+  }
+
+  .decay-card {
+    overflow-x: auto;
+  }
+
   .energy-grid {
     padding-left: 0;
   }
@@ -1151,6 +2390,18 @@ footer p {
   .focus-note {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .method-explanation {
+    grid-template-columns: 7rem minmax(0, 1fr);
+  }
+
+  .method-input {
+    grid-template-columns: minmax(220px, 0.8fr) minmax(260px, 1.2fr);
+  }
+
+  .method-name {
+    grid-column: 2;
   }
 }
 
@@ -1180,6 +2431,82 @@ footer p {
     flex-wrap: wrap;
   }
 
+  .decay-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .decay-toolbar p {
+    margin-left: 0;
+  }
+
+  .temperature-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .method-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .method-toolbar > p {
+    margin-left: 0;
+  }
+
+  .method-input {
+    grid-template-columns: 1fr;
+  }
+
+  .method-rotate {
+    width: 100%;
+  }
+
+  .method-rotate input {
+    flex: 1;
+  }
+
+  .method-controls,
+  .method-explanation {
+    grid-template-columns: 1fr;
+  }
+
+  .method-controls .play-button {
+    justify-self: start;
+  }
+
+  .method-name {
+    grid-column: auto;
+    padding-top: 1rem;
+    padding-left: 0;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .temperature-toolbar > p {
+    margin-left: 0;
+  }
+
+  .fit-warning {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .temperature-insight {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .concentration-equation {
+    grid-template-columns: 1fr auto;
+  }
+
+  .concentration-equation .concentration-result {
+    grid-column: 1 / -1;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
   .model-status {
     width: 100%;
     margin-left: 0;
@@ -1192,7 +2519,9 @@ footer p {
 
   .time-controls,
   .chart-note,
-  .forcing-slider-label {
+  .forcing-slider-label,
+  .temperature-slider-label,
+  .temperature-total {
     margin-left: 0;
   }
 

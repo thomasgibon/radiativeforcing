@@ -63,6 +63,21 @@ requiring an equation:
 - the fraction of that pulse remaining in the atmosphere; and
 - the radiative forcing produced by the remaining atmospheric burden.
 
+Immediately after the one-tonne release, introduce concentration as the share
+of dry-air molecules that are CO2. Keep observed context and metric convention
+visibly separate:
+
+- **Observed context:** date-stamp NOAA's global mean (428.73 ppm for May
+  2026, preliminary) and compare it with approximately 280 ppm before
+  industrialization.
+- **Pulse-scale conversion:** the AR6 mass conversion gives approximately
+  7.80 billion tonnes CO2 per ppm, so one idealized globally mixed tonne adds
+  only `1.28e-10 ppm`. Display the background and increment separately rather
+  than writing a falsely precise combined concentration.
+- **Metric convention:** retain 409.9 ppm as the explicitly labelled AR6
+  reference background used to reproduce its radiative-efficiency calculation.
+  Do not silently replace it with the current observed concentration.
+
 One tonne is used because it is tangible. Calculations must state whether
 values are per kilogram or per tonne; GWP is unchanged by that choice when the
 same mass basis is used for the gas and CO2. The global forcing caused by a
@@ -178,14 +193,51 @@ The page scrolls through a sequence of linked scenes. Each scene introduces at
 most one important new idea, retains useful visual encodings from the previous
 scene, and provides one primary interaction.
 
+Color carries the same meaning across scenes: orange marks the emission event,
+blue-grey the atmospheric burden/concentration, coral radiative forcing, and
+teal climate/temperature response. Component decompositions may use related
+shades, but must recombine into their parent quantity's established color.
+Labels, line styles, and accessible descriptions must repeat the distinction so
+color is never the only encoding.
+
 ### 1. Release one tonne
 
 - **Action:** press `Release 1 t CO2` and scrub time.
-- **Visual:** a pulse at year zero and a counter showing mass still in the
-  atmosphere.
+- **Visual:** a pulse at year zero; do not yet introduce scaling, another gas,
+  or an emissions history.
+- **Lesson:** a pulse is an emission idealized as occurring at one instant.
+
+### 2.1. From one tonne to concentration
+
+- **Action:** convert only the released tonne to ppm.
+- **Visual:** keep the observed background (`428.73 ppm`, May 2026) separate
+  from the calculated one-tonne increment (`+1.28e-10 ppm`); do not yet offer
+  kt, Mt, or Gt controls.
+- **Lesson:** ppm is a mole fraction, the atmosphere already contains CO2, and
+  global mixing is an idealization rather than an immediate physical event.
+- **Convention disclosure:** show the AR6 `409.9 ppm` calculation background in
+  a compact note beside radiative efficiency, where its role matters.
+
+### 2.2. Why the concentration increment persists
+
+- **Action:** scrub time, then separate and recombine the fitted response terms.
+- **Visual:** retain the one-tonne atmospheric counter and response curve.
 - **Lesson:** the emission is instantaneous; its atmospheric influence is not.
-- **Progressive reveal:** show CO2's multiple removal timescales only after the
-  reader has seen that a single exponential cannot describe it.
+- **Fitted-term animation:** show the persistent term and three exponential
+  terms independently, then let colored copies fall into a fifth panel. Stack
+  their exact contributions at every year so the upper boundary draws the
+  total AR6 response.
+- **Timescale intuition:** label each term above its chart. For finite terms,
+  draw the origin tangent (which reaches zero at `t = tau`) and mark the actual
+  exponential at `t = tau` (where `e^-1`, about 37%, remains).
+- **Interpretive guardrail:** the fitted terms are mathematical modes of the
+  coupled carbon cycle, not individually identifiable land, forest, soil,
+  ocean, or geological reservoirs. Individual upper panels may normalize their
+  vertical scales for legibility; the combined panel must use the common true
+  scale and state this distinction.
+- **Source disclosure:** reproduce the relevant carbon-cycle rows of Millar et
+  al. (2017), Table 1, in an accessible expandable table and explain that its
+  AR5-IR parameters were fitted to the Joos et al. (2013) ensemble.
 - **Reservoir language:** early losses from the atmospheric pulse are mainly
   transfers into land and ocean reservoirs and are not necessarily permanent.
   A later disclosure may show reversible arrows between reservoirs.
@@ -194,7 +246,7 @@ scene, and provides one primary interaction.
   thousands of years and longer, but are not represented by the 500-year
   response shown here.
 
-### 2. From remaining gas to forcing
+### 3.1. From remaining gas to forcing
 
 - **Action:** move a radiative-efficiency control for a hypothetical gas.
 - **Visual:** atmospheric burden and instantaneous forcing in aligned plots.
@@ -203,7 +255,64 @@ scene, and provides one primary interaction.
 - **Equation reveal:** `RF_i(t) = RE_i * IRF_i(t)`, with conversions and units
   available on demand.
 
-### 3. Braking is not reversing
+### 3.2. What forcing changes
+
+- **Visual:** keep the same pulse and introduce the top-of-atmosphere energy
+  imbalance without adding another calculation.
+- **Lesson:** forcing changes the rate of Earth's energy flow; it is not stored
+  heat and is not temperature.
+
+### 4.1. Build one temperature value from the forcing history
+
+- **Action:** first show the familiar forcing curve and the climate's response
+  to a brief unit of forcing as separate, labelled 2D curves. The latter is a
+  new concept at this point and must be explained before either curve is moved
+  into 3D. Then build their product surface and drag the observation-time
+  plane.
+- **Visual:** forcing time is `x`, response lag is `y`, and the product is the
+  temperature-contribution density on `z`. The plane `x + y = t` selects a
+  diagonal through the surface; the diagonal sum gives temperature at `t`.
+  A top view provides the equivalent heat map and must remain available as the
+  clearer 2D reading. The 3D projection may be rotated without changing the
+  selected year.
+- **Output link:** each position of the plane must place the diagonal total at
+  the corresponding year in a separate temperature panel. Sweeping the plane
+  progressively draws the full temperature-response curve; the value readout
+  alone is insufficient to teach the operation.
+- **Narrative pacing:** do not name the operation initially. Reveal the term
+  `convolution` only after the reader has moved the plane and seen one value
+  assembled.
+- **Lesson:** each forcing instant has had a different amount of time to act by
+  the observation year. Temperature is therefore not simply the area under the
+  forcing curve.
+- **Prototype status:** a dependency-free SVG spike now exports the AR6 thermal
+  impulse kernel, introduces both input curves in 2D, constructs a rotatable
+  product surface, links a draggable/scrubbable `x + y = t` slice to the shared
+  year, and draws the verified AR6 pulse-temperature output. The geometry and
+  pedagogy require user testing before polish.
+
+### 4.2. Forcing is not temperature
+
+- **Action:** separate and combine the fast and slow AR6 thermal contributions
+  at the same selected year.
+- **Visual:** linked forcing, Earth energy imbalance, and global mean surface
+  temperature plots.
+- **Thermal decomposition:** expose the two fitted AR6 thermal modes separately
+  and combine their exact contributions into AGTP.
+- **Lesson:** forcing initiates a response, while heat uptake and feedbacks
+  determine how temperature evolves. The two fitted modes explain the shape of
+  the climate impulse response used in 4.1.
+
+### 5. Scale beyond one tonne
+
+- **Action:** step through `1 t`, `1 kt`, `1 Mt`, and `1 Gt`, then introduce a
+  dated historical emissions and concentration view.
+- **Visual:** reuse the mass-to-ppm conversion and align gross emissions with
+  sink-modified atmospheric growth.
+- **Lesson:** the one-tonne chain scales, but emissions and atmospheric growth
+  are not identical because land and ocean uptake operate simultaneously.
+
+#### 5.1. Braking is not reversing
 
 - **Action:** accelerate, brake, stop, and briefly reverse a stylized CO2
   emissions pathway.
@@ -218,19 +327,15 @@ scene, and provides one primary interaction.
   and ocean outgassing means an atmospheric removal pulse is not generally the
   exact mirror image of an emission pulse.
 
-### 4. Forcing is not temperature
+### 6. Introduce another greenhouse gas
 
-- **Action:** apply the same forcing to climate responses with different
-  response timescales and feedback strength.
-- **Visual:** linked forcing, Earth energy imbalance, and global mean surface
-  temperature plots; reveal the slow ocean component after the fast response.
-- **Lesson:** forcing initiates a response, while heat uptake and feedbacks
-  determine how temperature evolves. Temperature is not another area under the
-  forcing curve.
-- **CO2 connection:** show the assessed near-linear cumulative-CO2/warming
-  relationship as TCRE, with its scope and uncertainty.
+- **Action:** keep pulse mass fixed and replace CO2 with one contrasting gas.
+- **Visual:** reuse the now-familiar concentration, persistence, and forcing
+  views before introducing any metric ratio.
+- **Lesson:** gases follow the same causal chain with different lifetimes,
+  chemistry, and radiative efficiencies.
 
-### 5. Accumulate forcing through time
+### 7. Accumulate forcing through time
 
 - **Action:** drag the time horizon `H`.
 - **Visual:** shade the forcing curve from zero to `H`; update the integral
@@ -247,21 +352,21 @@ This scene must answer why an operational metric integrates forcing even
 though temperature and impacts are further down the causal chain. The later
 AR6 reconstruction should also distinguish GWP from temperature-based AGTP/GTP.
 
-### 6. Why the horizon matters
+### 8. Why the horizon matters
 
 - **Action:** move between 20, 100, and 500 years, then scrub continuously.
 - **Visual:** compare a short-lived illustrative gas with persistent CO2.
 - **Lesson:** the metric answers a horizon-dependent policy question; it is not
   an intrinsic, horizon-free property of a molecule.
 
-### 7. Compare with CO2
+### 9. Compare with CO2
 
 - **Action:** place the two shaded areas into a live ratio.
 - **Visual:** equal-mass pulse responses for the selected gas and CO2.
 - **Lesson:** GWP is a normalization of cumulative forcing.
 - **Equation reveal:** `GWP_i(H) = AGWP_i(H) / AGWP_CO2(H)`.
 
-### 8. Reconstruct AR6
+### 10. Reconstruct AR6
 
 - **Action:** progressively enable assessed components and conventions.
 - **Visual:** a transparent stack from the elementary response to the complete
@@ -273,14 +378,14 @@ AR6 reconstruction should also distinguish GWP from temperature-based AGTP/GTP.
   (AGWP/GWP) or to temperature at a chosen time (AGTP/GTP); these answer
   different questions.
 
-### 9. Explore other gases
+### 11. Explore other gases
 
 - **Action:** choose an AR6 gas and horizon in a laboratory view.
 - **Visual:** reuse the now-familiar burden, forcing, area, and ratio views.
 - **Lesson:** the same construction explains the catalogue; the catalogue does
   not precede the construction.
 
-### 10. From a pulse to an emissions history
+### 12. From a pulse to an emissions history
 
 - **Action:** add, move, or resize emissions in several years.
 - **Visual:** show each emission cohort as a shifted copy of the pulse response,
@@ -288,7 +393,7 @@ AR6 reconstruction should also distinguish GWP from temperature-based AGTP/GTP.
 - **Lesson:** today's forcing contains surviving contributions from many past
   emissions.
 
-### 11. See the convolution
+### 13. See the convolution
 
 - **Action:** drag the observation-time plane through the cohort surface.
 - **Visual progression:** aligned curves, then a two-dimensional cohort heat
